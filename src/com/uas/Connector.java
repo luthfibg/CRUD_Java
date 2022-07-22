@@ -16,8 +16,8 @@ public class Connector {
 
             DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
             connectDB = DriverManager.getConnection(DB, user, pass);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Tidak ada koneksi", "error", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "No Database Connection", "Error!", JOptionPane.INFORMATION_MESSAGE);
             System.err.println(e.getMessage());
             System.exit(0);
         }

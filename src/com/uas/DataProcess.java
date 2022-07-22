@@ -40,6 +40,7 @@ public class DataProcess extends javax.swing.JFrame {
                         resultSet.getString("start_date"),
                         resultSet.getString("end_date")
                 };
+                tableModel.addRow(data);
             }
 
         } catch (SQLException e){
@@ -68,4 +69,5 @@ public class DataProcess extends javax.swing.JFrame {
     private JLabel enrollmentLabel;
     private JLabel endDateLabel;
     private JLabel startDateLabel;
+    private JScrollPane jScrollTable;
 }
