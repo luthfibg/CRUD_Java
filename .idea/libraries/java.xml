@@ -2,6 +2,7 @@
   <library name="java">
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/../../../AppList/mysql-8.0.25/mysql-connector-java-8.0.25.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../AppList/rs2xml/rs2xml.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
@@ -15,6 +16,7 @@
       <root url="jar://$PROJECT_DIR$/../../../AppList/mysql-connector-java-8.0.29.zip!/mysql-connector-java-8.0.29/src/main/user-api/java" />
       <root url="jar://$PROJECT_DIR$/../../../AppList/mysql-connector-java-8.0.29.zip!/mysql-connector-java-8.0.29/src/main/user-impl/java" />
       <root url="jar://$PROJECT_DIR$/../../../AppList/mysql-connector-java-8.0.29.zip!/mysql-connector-java-8.0.29/src/test/java" />
+      <root url="jar://$PROJECT_DIR$/../../../AppList/rs2xml/rs2xml.jar!/src" />
     </SOURCES>
   </library>
 </component>

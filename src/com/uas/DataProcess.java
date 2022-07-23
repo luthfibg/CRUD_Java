@@ -2,15 +2,16 @@ package com.uas;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.*;
 
 public class DataProcess extends javax.swing.JFrame {
 
     DefaultTableModel tableModel;
     ResultSet resultSet = null;
+
+    PreparedStatement pst;
 
     public JPanel getMainPanel(){
         return BasePanel;
@@ -19,6 +20,82 @@ public class DataProcess extends javax.swing.JFrame {
     public DataProcess(){
         frameInit();
         showData();
+        buttonAdd.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String courseName, courseNumber, enrollment, startDate, endDate;
+                courseName = courseNameTextField.getText();
+                courseNumber = courseNumberTextField.getText();
+                enrollment = enrollmentTextField.getText();
+                startDate = startDateTextField.getText();
+                endDate = endDateTextField.getText();
+
+                try {
+                    pst = Connector.ConnectDB().prepareStatement("INSERT INTO tbcourse (course_name, course_number, enrollment, start_date, end_date) values (?,?,?,?,?)");
+                    pst.setString(1, courseName);
+                    pst.setString(2, courseNumber);
+                    pst.setString(3, enrollment);
+                    pst.setString(4, startDate);
+                    pst.setString(5, endDate);
+                    pst.executeUpdate();
+                } catch (SQLException err){
+                    JOptionPane.showMessageDialog(null, "Data successfully added");
+                    showData();
+                }
+                courseNameTextField.setText("");
+                courseNumberTextField.setText("");
+                enrollmentTextField.setText("");
+                startDateTextField.setText("");
+                endDateTextField.setText("");
+            }
+        });
+        buttonDelete.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String courseName;
+                courseName = courseNameTextField.getText();
+                try {
+                    pst = Connector.ConnectDB().prepareStatement("DELETE FROM tbcourse WHERE course_name = ?;");
+                    pst.setString(1, courseName);
+                    JOptionPane.showMessageDialog(null, "Data Deleted");
+                    showData();
+                    courseNameTextField.setText("");
+                    courseNumberTextField.setText("");
+                    enrollmentTextField.setText("");
+                    startDateTextField.setText("");
+                    endDateTextField.setText("");
+                } catch(SQLException err){
+                    err.printStackTrace();
+                }
+            }
+        });
+        buttonUpdate.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String courseName, courseNumber, enrollment, startDate, endDate;
+                courseName = courseNameTextField.getText();
+                courseNumber = courseNumberTextField.getText();
+                enrollment = enrollmentTextField.getText();
+                startDate = startDateTextField.getText();
+                endDate = endDateTextField.getText();
+
+                try {
+                    pst = Connector.ConnectDB().prepareStatement("UPDATE tbcourse SET course_name = ?, course_number = ?, enrollment = ?, start_date = ?, end_date = ? WHERE course_number = ?");
+                    pst.setString(1, courseName);
+                    pst.setString(2, courseNumber);
+                    pst.setString(3, enrollment);
+                    pst.setString(4, startDate);
+                    pst.setString(5, endDate);
+
+                    pst.executeUpdate();
+                    JOptionPane.showMessageDialog(null, "Update data success!");
+                    showData();
+
+                } catch (SQLException exception){
+                    exception.printStackTrace();
+                }
+            }
+        });
     }
 
     private void showData() {
