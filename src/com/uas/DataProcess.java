@@ -4,7 +4,10 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.sql.*;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -100,6 +103,22 @@ public class DataProcess extends javax.swing.JFrame {
                 }
             }
         });
+
+        searchTextField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                super.keyReleased(e);
+                String key = searchTextField.getText();
+                System.out.println(key);
+
+                if (!Objects.equals(key, "")){
+                    searchData(key);
+                } else {
+                    showData();
+                }
+
+            }
+        });
     }
 
     private void showData() {
@@ -113,6 +132,34 @@ public class DataProcess extends javax.swing.JFrame {
             tableModel.getDataVector().removeAllElements();
             // set query to fetch data
             resultSet = stt.executeQuery("SELECT * FROM tbcourse");
+            while (resultSet.next()) {
+                Object[] data = {
+                        resultSet.getString("id_course"),
+                        resultSet.getString("course_name"),
+                        resultSet.getString("course_number"),
+                        resultSet.getString("enrollment"),
+                        resultSet.getString("start_date"),
+                        resultSet.getString("end_date")
+                };
+                tableModel.addRow(data);
+            }
+
+        } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void searchData(String key) {
+        try {
+            Object[] columnTitle = {"id_course", "course_name", "course_num", "enrollment", "start_date", "end_date"};
+            tableModel = new DefaultTableModel(null, columnTitle);
+            jTable.setModel(tableModel);
+            // retrieve mySQL DB
+            Connection connect = Connector.ConnectDB();
+            Statement stt = connect.createStatement();
+            tableModel.getDataVector().removeAllElements();
+            // set query to fetch data
+            resultSet = stt.executeQuery("SELECT * FROM tbcourse WHERE course_name LIKE '%"+key+"%' OR course_number LIKE '%"+key+"%' OR enrollment LIKE '%"+key+"%' OR start_date LIKE '%"+key+"%' OR end_date LIKE '%"+key+"%' ");
             while (resultSet.next()) {
                 Object[] data = {
                         resultSet.getString("id_course"),
@@ -152,6 +199,6 @@ public class DataProcess extends javax.swing.JFrame {
     private JLabel endDateLabel;
     private JLabel startDateLabel;
     private JScrollPane jScrollTable;
-    private JButton buttonSearch;
-    private JTextField textField1;
+    private JTextField searchTextField;
+    private JLabel searchLabel;
 }
