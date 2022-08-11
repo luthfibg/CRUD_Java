@@ -5,6 +5,8 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DataProcess extends javax.swing.JFrame {
 
@@ -38,9 +40,10 @@ public class DataProcess extends javax.swing.JFrame {
                     pst.setString(4, startDate);
                     pst.setString(5, endDate);
                     pst.executeUpdate();
-                } catch (SQLException err){
                     JOptionPane.showMessageDialog(null, "Data successfully added");
                     showData();
+                } catch (SQLException err){
+                    Logger.getLogger(DataProcess.class.getName()).log(Level.SEVERE, null, err);
                 }
                 courseNameTextField.setText("");
                 courseNumberTextField.setText("");
@@ -72,7 +75,8 @@ public class DataProcess extends javax.swing.JFrame {
         buttonUpdate.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String courseName, courseNumber, enrollment, startDate, endDate;
+                String courseNameUp,courseName, courseNumber, enrollment, startDate, endDate;
+                courseNameUp = courseNameTextField.getText();
                 courseName = courseNameTextField.getText();
                 courseNumber = courseNumberTextField.getText();
                 enrollment = enrollmentTextField.getText();
@@ -80,7 +84,7 @@ public class DataProcess extends javax.swing.JFrame {
                 endDate = endDateTextField.getText();
 
                 try {
-                    pst = Connector.ConnectDB().prepareStatement("UPDATE tbcourse SET course_name = ?, course_number = ?, enrollment = ?, start_date = ?, end_date = ? WHERE course_number = ?");
+                    pst = Connector.ConnectDB().prepareStatement("UPDATE tbcourse SET course_name = ?, course_number = ?, enrollment = ?, start_date = ?, end_date = ? WHERE course_name = ?");
                     pst.setString(1, courseName);
                     pst.setString(2, courseNumber);
                     pst.setString(3, enrollment);
@@ -100,7 +104,7 @@ public class DataProcess extends javax.swing.JFrame {
 
     private void showData() {
         try {
-            Object[] columnTitle = {"course_name", "course_num", "enrollment", "start_date", "end_date"};
+            Object[] columnTitle = {"id_course", "course_name", "course_num", "enrollment", "start_date", "end_date"};
             tableModel = new DefaultTableModel(null, columnTitle);
             jTable.setModel(tableModel);
             // retrieve mySQL DB
@@ -111,6 +115,7 @@ public class DataProcess extends javax.swing.JFrame {
             resultSet = stt.executeQuery("SELECT * FROM tbcourse");
             while (resultSet.next()) {
                 Object[] data = {
+                        resultSet.getString("id_course"),
                         resultSet.getString("course_name"),
                         resultSet.getString("course_number"),
                         resultSet.getString("enrollment"),
@@ -147,4 +152,6 @@ public class DataProcess extends javax.swing.JFrame {
     private JLabel endDateLabel;
     private JLabel startDateLabel;
     private JScrollPane jScrollTable;
+    private JButton buttonSearch;
+    private JTextField textField1;
 }
