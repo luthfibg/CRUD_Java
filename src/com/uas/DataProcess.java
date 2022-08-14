@@ -1,6 +1,7 @@
 package com.uas;
 
 import javax.swing.*;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -79,6 +80,38 @@ public class DataProcess extends javax.swing.JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 SwingUtilities.invokeLater(DataProcess::createUpdateGUI);
+
+                Object[] columnTitle = {"id_course", "course_name", "course_num", "enrollment", "start_date", "end_date"};
+                tableModel = new DefaultTableModel(null, columnTitle);
+//                tableModel.fireTableDataChanged();
+//
+//                jTable.revalidate();
+//                jTable.repaint();
+                showData();
+
+//                String courseNameUp,courseName, courseNumber, enrollment, startDate, endDate;
+//                courseNameUp = courseNameTextField.getText();
+//                courseName = courseNameTextField.getText();
+//                courseNumber = courseNumberTextField.getText();
+//                enrollment = enrollmentTextField.getText();
+//                startDate = startDateTextField.getText();
+//                endDate = endDateTextField.getText();
+//
+//                try {
+//                    pst = Connector.ConnectDB().prepareStatement("UPDATE tbcourse SET course_name = ?, course_number = ?, enrollment = ?, start_date = ?, end_date = ? WHERE course_name = ?");
+//                    pst.setString(1, courseName);
+//                    pst.setString(2, courseNumber);
+//                    pst.setString(3, enrollment);
+//                    pst.setString(4, startDate);
+//                    pst.setString(5, endDate);
+//
+//                    pst.executeUpdate();
+//                    JOptionPane.showMessageDialog(null, "Update data success!");
+//                    showData();
+//
+//                } catch (SQLException exception){
+//                    exception.printStackTrace();
+//                }
             }
         });
 
@@ -121,6 +154,8 @@ public class DataProcess extends javax.swing.JFrame {
                 };
                 tableModel.addRow(data);
             }
+            tableModel.fireTableDataChanged();
+
 
         } catch (SQLException e){
             throw new RuntimeException(e);
