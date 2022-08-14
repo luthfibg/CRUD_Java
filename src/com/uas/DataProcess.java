@@ -78,29 +78,7 @@ public class DataProcess extends javax.swing.JFrame {
         buttonUpdate.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String courseNameUp,courseName, courseNumber, enrollment, startDate, endDate;
-                courseNameUp = courseNameTextField.getText();
-                courseName = courseNameTextField.getText();
-                courseNumber = courseNumberTextField.getText();
-                enrollment = enrollmentTextField.getText();
-                startDate = startDateTextField.getText();
-                endDate = endDateTextField.getText();
-
-                try {
-                    pst = Connector.ConnectDB().prepareStatement("UPDATE tbcourse SET course_name = ?, course_number = ?, enrollment = ?, start_date = ?, end_date = ? WHERE course_name = ?");
-                    pst.setString(1, courseName);
-                    pst.setString(2, courseNumber);
-                    pst.setString(3, enrollment);
-                    pst.setString(4, startDate);
-                    pst.setString(5, endDate);
-
-                    pst.executeUpdate();
-                    JOptionPane.showMessageDialog(null, "Update data success!");
-                    showData();
-
-                } catch (SQLException exception){
-                    exception.printStackTrace();
-                }
+                SwingUtilities.invokeLater(DataProcess::createUpdateGUI);
             }
         });
 
@@ -176,6 +154,20 @@ public class DataProcess extends javax.swing.JFrame {
             throw new RuntimeException(e);
         }
     }
+
+    public static void createUpdateGUI(){
+
+        UpdateData UpdateUI = new UpdateData();
+        JPanel updateRoot = UpdateUI.getUpdatePanel();
+        JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setContentPane(updateRoot);
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+
+    }
+
 
     private JPanel mainPanel;
     private JPanel BasePanel;
