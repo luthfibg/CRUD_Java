@@ -22,7 +22,7 @@ public class UpdateData {
                 upCourseEnd = jTextUpEnd.getText();
 
                 try {
-                    pstUpdate = Connector.ConnectDB().prepareStatement("UPDATE tbcourse SET course_name = ?, course_number = ?, enrollment = ?, start_date = ?, end_date = ? WHERE id_course = ?");
+                    pstUpdate = Connector.ConnectDB().prepareStatement("UPDATE tbcourse SET course_name = ?, course_number = ?, enrollment = ?, start_date = ?, end_date = ? WHERE id_course = ?;");
                     pstUpdate.setString(1, upCourseName);
                     pstUpdate.setString(2, upCourseNum);
                     pstUpdate.setString(3, upCourseEnroll);
