@@ -59,21 +59,23 @@ public class DataProcess extends javax.swing.JFrame {
         buttonDelete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String courseName;
-                courseName = courseNameTextField.getText();
-                try {
-                    pst = Connector.ConnectDB().prepareStatement("DELETE FROM tbcourse WHERE course_name = ?;");
-                    pst.setString(1, courseName);
-                    JOptionPane.showMessageDialog(null, "Data Deleted");
-                    showData();
-                    courseNameTextField.setText("");
-                    courseNumberTextField.setText("");
-                    enrollmentTextField.setText("");
-                    startDateTextField.setText("");
-                    endDateTextField.setText("");
-                } catch(SQLException err){
-                    err.printStackTrace();
-                }
+                SwingUtilities.invokeLater(DataProcess::createDeleteGUI);
+
+//                String courseName;
+//                courseName = courseNameTextField.getText();
+//                try {
+//                    pst = Connector.ConnectDB().prepareStatement("DELETE FROM tbcourse WHERE course_name = ?;");
+//                    pst.setString(1, courseName);
+//                    JOptionPane.showMessageDialog(null, "Data Deleted");
+//                    showData();
+//                    courseNameTextField.setText("");
+//                    courseNumberTextField.setText("");
+//                    enrollmentTextField.setText("");
+//                    startDateTextField.setText("");
+//                    endDateTextField.setText("");
+//                } catch(SQLException err){
+//                    err.printStackTrace();
+//                }
             }
         });
         buttonUpdate.addActionListener(new ActionListener() {
@@ -202,6 +204,20 @@ public class DataProcess extends javax.swing.JFrame {
         frame.setVisible(true);
 
     }
+
+    public static void createDeleteGUI(){
+
+        DeleteData deleteUI = new DeleteData();
+        JPanel deleteRoot = deleteUI.getDeletePanel();
+        JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setContentPane(deleteRoot);
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+
+    }
+
 
 
     private JPanel mainPanel;

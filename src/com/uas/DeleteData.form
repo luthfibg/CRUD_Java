@@ -50,7 +50,7 @@
               </grid>
             </constraints>
             <properties>
-              <text value="Define ID data want to delete"/>
+              <text value="0"/>
             </properties>
           </component>
           <hspacer id="75ce">
